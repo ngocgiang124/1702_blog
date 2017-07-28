@@ -1,7 +1,34 @@
 @extends('layouts.admin')
 @section('title', 'Category management')
 @section('content')
-	<h1>Category Management</h1>
+@php
+	$pageSizes = [20, 40, 60, 100];
+	$sortedArr = get_options($cates);
+	// dd($sortedArr);
+@endphp
+	<div class="col-sm-12">
+		<form action="{{route('cate.list')}}" method="get" class="form-inline col-sm-4" >	
+			<div class="form-group">
+				<label for="">Page size</label>
+				<select name="pageSize">
+					@foreach ($pageSizes as $ps)
+						@php
+							$selectedPs = $ps == $ctlPageSize ? "selected" : "";
+						@endphp
+						<option {{$selectedPs}} value="{{$ps}}">{{$ps}}</option>
+					@endforeach
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="">Search</label>
+				<input type="text" value="{{$keyword}}" class="form-control" name="keyword">
+				<button type="submit" class="btn btn-sm btn-info">
+					<span class="glyphicon glyphicon-search"></span>
+				</button>
+			</div>
+			
+		</form>
+	</div>
 	<table class="table table-hover">
 		<thead>
 			<tr>
@@ -14,10 +41,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach ($cates as $element)
+			@foreach ($sortedArr as $element)
 				<tr>
 					<td>{{++$loop->index}}</td>
-					<td>{{$element->cate_name}}</td>
+					<td>{{$element}}</td>
 					<td>{{$element->getParentName()}}</td>
 					<td>
 						<a href="" class="btn btn-xs btn-info">Edit</a>
@@ -25,8 +52,16 @@
 					</td>
 				</tr>
 			@endforeach
+			<tr>
+				<td colspan="4" class="text-center">
+					{{ $cates->links() }}
+				</td>
+			</tr>
 			
 		</tbody>
 	</table>
 
 @endsection
+
+
+

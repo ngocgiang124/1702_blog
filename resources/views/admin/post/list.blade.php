@@ -7,7 +7,7 @@
 	
 @endphp
 	<div class="col-sm-12">
-		<form action="{{route('cate.list')}}" method="get" class="form-inline col-sm-10" >	
+		<form action="{{route('post.list')}}" method="get" class="form-inline col-sm-10" >	
 			<div class="form-group">
 				<label for="">Page size</label>
 				<select name="pageSize">
@@ -34,32 +34,37 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Cate name</th>
-				<th>Parent name</th>
+				<th width="70">Image</th>
+				<th>Title</th>
+				<th>Category name</th>
 				<th> 
-					<a href="{{route('cate.create')}}" class="btn btn-xs btn-success">Create</a>
+					<a href="{{route('post.create')}}" class="btn btn-xs btn-success">Create</a>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach ($cates as $element)
-				@php
-					// $element = get_in_array($key, $cates, "x");
-					// $element->cate_name = $value;
-				@endphp
+			@foreach ($posts as $element)
 				<tr>
 					<td>{{++$loop->index}}</td>
-					<td>{{$element->cate_name}}</td>
-					<td>{{$element->getParentName()}}</td>
 					<td>
-						<a href="{{route('cate.update', ['id' => $element->id])}}" class="btn btn-xs btn-info">Edit</a>
-						<a href="{{route('cate.remove', ['id' => $element->id])}}" class="btn btn-xs btn-danger">Remove</a>
+					@if ($element->image == 'http://lorempixel.com/400/200/')
+						<img src="{{$element->image}}" alt="">
+					@else
+						<img src="{{asset($element->image)}}" alt="">
+					@endif
+						
+					</td>
+					<td>{{$element->title}}</td>
+					<td>{{$element->category->cate_name}}</td>
+					<td>
+						<a href="{{route('post.update', ['id' => $element->id])}}" class="btn btn-xs btn-info">Edit</a>
+						<a href="{{route('post.remove', ['id' => $element->id])}}" class="btn btn-xs btn-danger">Remove</a>
 					</td>
 				</tr>
 			@endforeach
 			<tr>
 				<td colspan="4" class="text-center">
-					{{ $cates->links() }}
+					{{ $posts->links() }}
 				</td>
 			</tr>
 			

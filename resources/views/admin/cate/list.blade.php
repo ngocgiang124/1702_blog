@@ -42,6 +42,7 @@
 			</tr>
 		</thead>
 		<tbody>
+			
 			@foreach ($cates as $element)
 				@php
 					// $element = get_in_array($key, $cates, "x");

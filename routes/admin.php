@@ -1,8 +1,18 @@
 <?php 
+use Illuminate\Http\Request;
 /**
  * Dashboard
  */
+Route::post('/check-url', function(Request $request){
+	$result = \App\Models\Slug::checkSlugExisted($request->entityType, $request->entityId, $request->slug);
 
+	return response()->json($result);
+})->name('slug.existed');
+Route::get('/generate-slug', function(Request $request){
+	$slug = str_slug(trim($request->title), '-');
+	$slug .= "-" . date('YmdHis', time());
+	return response()->json(['data' => $slug]);
+})->name('slug.generate');
 Route::group(['middleware' => 'auth'], function(){
 	
 	Route::get('/', function(){
